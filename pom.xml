@@ -21,6 +21,14 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>jena-bio-libs-release-oss</id>
+            <name>Jena Bio</name>
+            <url>https://bio.informatik.uni-jena.de/repository/libs-release-oss/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/cplex/cplex -->
         <dependency>
