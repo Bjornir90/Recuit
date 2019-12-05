@@ -1,4 +1,4 @@
-package com.scep;
+package main.java.com.scep;
 
 import java.util.List;
 
