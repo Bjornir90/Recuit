@@ -9,7 +9,7 @@ public abstract class RecuitGenerique implements Solver{
 
     public abstract float objectif(float[] x);
 
-    public abstract boolean verifiesConstraints();
+    public abstract boolean verifiesConstraints(float[] newX);
 
     protected void updateSolution(float[] newX){
         float delta = objectif(newX) - objectif(currentX);
