@@ -5,9 +5,10 @@ import ilog.concert.IloIntVar;
 import ilog.concert.IloLinearNumExpr;
 import ilog.cplex.IloCplex;
 
-public abstract class CplexGenerique implements Solver{
 
-    enum compOp {
+public class CplexGenerique implements Solver{
+
+    protected enum compOp {
         GE,
         LE,
         EQ
@@ -77,5 +78,13 @@ public abstract class CplexGenerique implements Solver{
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void main(String[] args) throws IloException {
+        CplexGenerique test = new CplexGenerique();
+        test.addObjective(2, new double[]{10,20}, false);
+        test.addConstraint(new double[]{1,0}, 4, compOp.LE);
+        test.addConstraint(new double[]{0,1}, 6, compOp.LE);
+        Solution s = test.compute();
     }
 }
