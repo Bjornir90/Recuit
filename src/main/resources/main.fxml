@@ -16,21 +16,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <VBox prefWidth="480.0" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.scep.fxui.MainController">
    <children>
       <HBox alignment="CENTER">
          <children>
-            <Button fx:id="detParamBtn" disable="true" mnemonicParsing="false" text="Modifier paramètres déterministes" />
+            <Button fx:id="detParamBtn" disable="true" text="Modifier paramètres déterministes" />
             <HBox fillHeight="false" HBox.hgrow="ALWAYS" />
-            <Text fx:id="dataStatus" fill="#595959" strokeType="OUTSIDE" strokeWidth="0.0" text="Chargement des données..." />
+            <Text fx:id="dataStatus" fill="#595959" text="Chargement des données..." />
          </children>
       </HBox>
-      <Separator prefWidth="200.0">
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </Separator>
+      <Separator />
       <GridPane alignment="CENTER_LEFT">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" />
@@ -42,32 +39,30 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Méthode de résolution" />
-            <Label text="Nombre itérations intérieures" GridPane.rowIndex="1" />
-            <Label text="Nombre itérations extérieures" GridPane.rowIndex="2" />
-            <TextField fx:id="recItIn" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="recItOut" text="15" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ComboBox fx:id="resMethod" maxWidth="1.7976931348623157E308" promptText="Recuit" GridPane.columnIndex="1" />
+            <Label text="Nombre de scénarios" />
+            <Label text="Méthode de résolution" GridPane.rowIndex="1" />
+            <Label text="Nombre itérations intérieures" GridPane.rowIndex="2" />
+            <Label text="Nombre itérations extérieures" GridPane.rowIndex="3" />
+            <TextField fx:id="scenarios" text="3" GridPane.columnIndex="1"  />
+            <ComboBox fx:id="resMethod" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="recItIn" disable="true" text="10" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="recItOut" disable="true" text="15" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <Button fx:id="resolve" alignment="CENTER" contentDisplay="TOP" defaultButton="true" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" snapToPixel="false" text="Résoudre">
+      <Button fx:id="resolveBtn" defaultButton="true" disable="true" maxWidth="1.7976931348623157E308" text="Résoudre">
          <font>
             <Font size="13.0" />
          </font>
       </Button>
-      <Separator layoutX="20.0" layoutY="62.0" prefWidth="200.0">
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </Separator>
+      <Separator layoutX="20.0" layoutY="62.0" prefWidth="200.0" />
       <VBox>
          <children>
             <Label text="Résultats" />
-            <TableView fx:id="results" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="results">
               <columns>
-                <TableColumn prefWidth="94.0" text="Code" />
-                <TableColumn prefWidth="281.0" text="Nom" />
-                  <TableColumn minWidth="0.0" prefWidth="84.5" text="x" />
+                <TableColumn text="code"><cellValueFactory><PropertyValueFactory property="code" /></cellValueFactory></TableColumn>
+                <TableColumn text="nom" ><cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory></TableColumn>
+                <TableColumn text="x"   ><cellValueFactory><PropertyValueFactory property="x"    /></cellValueFactory></TableColumn>
               </columns>
             </TableView>
             <Hyperlink fx:id="export" text="Exporter" />

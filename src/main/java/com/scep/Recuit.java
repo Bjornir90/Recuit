@@ -60,6 +60,8 @@ public class Recuit extends RecuitGenerique {
 
         //Mise à jour des variables de second niveau
 
+        verifiesConstraints(Xsuiv);
+
         for (int s = 0; s < P.size(); s++) {
             for (int i = 0; i < K.size(); i++) {
                 int betaSum = 0;
@@ -71,22 +73,7 @@ public class Recuit extends RecuitGenerique {
             }
         }
 
-        int delta = (int) (objectif(Xsuiv)-objectif(X));
-
-        //On accepte l'amélioration
-        if(delta < 0){
-            X = Xsuiv;
-            if(objectif(X) < fMin){
-                fMin = (int) objectif(X);
-                meilleurX = X;
-            }
-        //On vérifie que l'on est suffisament chaud pour accepter le résultat pire
-        } else {
-            double p = ThreadLocalRandom.current().nextDouble(0, 1);
-            if(p <= Math.exp(-delta/temp)){
-                X = Xsuiv;
-            }
-        }
+        updateSolution(Xsuiv);
     }
 
     private void iterationExt(){
@@ -109,8 +96,9 @@ public class Recuit extends RecuitGenerique {
         for (int i = 0; i < nbIterationExt; i++) {
             iterationExt();
         }
-        //return meilleurX;
-        return null;
+
+        int[] meilleurXInt = new int[meilleurX.length];
+        return new Solution(meilleurXInt, fMin);
     }
 
     @Override
@@ -126,8 +114,8 @@ public class Recuit extends RecuitGenerique {
 
             //Pour chaque station
             for (int i = 0; i < V.size(); i++) {
-                coutScenario += V.get(i)* Iminus.get(s).get(i);
-                coutScenario += W.get(i)* Ominus.get(s).get(i);//Math.max((X.get(i) - K.get(i)), 0);
+                coutScenario += V.get(i) * Iminus.get(s).get(i);
+                coutScenario += W.get(i) * Ominus.get(s).get(i);//Math.max((X.get(i) - K.get(i)), 0);
             }
 
             result += coutScenario*P.get(s);
@@ -148,7 +136,7 @@ public class Recuit extends RecuitGenerique {
                 for (int j = 0; j < K.size(); j++) {
                     ksiSum += Ksi.get(s).get(i).get(j);
                     //Deuxième contrainte
-                    if(Beta.get(s).get(i).get(j) != Ksi.get(s).get(i).get(j)- Iminus.get(s).get(i))
+                    if(Beta.get(s).get(i).get(j) != Ksi.get(s).get(i).get(j) - Iminus.get(s).get(i))
                         return false;
                 }
 
