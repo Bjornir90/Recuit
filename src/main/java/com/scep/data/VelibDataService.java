@@ -22,7 +22,7 @@ public class VelibDataService {
     };
 
     private List<VelibStation[]> parsedData;
-    private AvgVelibUse avgVelibUse;
+    private Demand demand;
 
     public VelibDataService() {
         long l1 = System.currentTimeMillis();
@@ -79,14 +79,14 @@ public class VelibDataService {
             stdDeviation[i][j] = (float) Math.sqrt(squareSum[i][j]/(double) matCount - Math.pow(avg[i][j], 2));
         }
 
-        avgVelibUse = new AvgVelibUse(avg, stdDeviation);
+        demand = new Demand(avg, stdDeviation);
     }
 
     public List<VelibStation[]> getParsedData() {
         return parsedData;
     }
 
-    public AvgVelibUse getAvgVelibUse() {
-        return avgVelibUse;
+    public Demand getDemand() {
+        return demand;
     }
 }

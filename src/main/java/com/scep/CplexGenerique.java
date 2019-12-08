@@ -86,5 +86,7 @@ public class CplexGenerique implements Solver{
         test.addConstraint(new double[]{1,0}, 4, compOp.LE);
         test.addConstraint(new double[]{0,1}, 6, compOp.LE);
         Solution s = test.compute();
+        System.out.println(s.dVars.toString());
+        System.out.println(s.objRes);
     }
 }
