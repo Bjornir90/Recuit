@@ -5,9 +5,9 @@ import ilog.concert.IloIntVar;
 import ilog.concert.IloLinearNumExpr;
 import ilog.cplex.IloCplex;
 
-public abstract class CplexGenerique implements Solver{
+public class CplexGenerique implements Solver{
 
-    enum compOp {
+    protected enum compOp {
         GE,
         LE,
         EQ
