@@ -22,6 +22,9 @@ public class CplexVLS extends CplexGenerique {
             int[] k_i,
             int nbScenario
     ) throws IloException {
+
+        System.out.println(demand.toString());
+
         // Construction du tableau de coef pour la fonction objectif
         int nbStation = k_i.length;
         float[] coefs = new float[nbStation + 2*(nbScenario * nbStation * nbStation) + 2*(nbScenario * nbStation)];
@@ -51,7 +54,7 @@ public class CplexVLS extends CplexGenerique {
         this.addObjective(coefs.length, coefs, true);
 
         // Construction des contraintes
-        float[] zero_coefs = new float[nbStation + 2*(nbScenario * nbStation * nbStation) + 2*(nbScenario * nbStation)];
+        float[] zero_coefs = new float[nbStation + 2*(nbScenario * nbStation * nbStation) + 3*(nbScenario * nbStation)];
         // (1a)
         for(int i=0; i<nbStation; i++){
             zero_coefs[i] = 1;

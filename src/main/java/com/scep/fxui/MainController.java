@@ -110,7 +110,11 @@ public class MainController {
                             Integer.parseInt(scenarios.getCharacters().toString())
                         );
                         Solution solution = cplex.compute();
-                        model.setX(solution.dVars);
+                        try{
+                            model.setX(solution.dVars);
+                        } catch(NullPointerException e){
+                            e.printStackTrace();
+                        }
                     } catch (IloException e) {
                         e.printStackTrace();
                     }
