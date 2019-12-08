@@ -24,7 +24,7 @@ public class CplexGenerique implements Solver{
 
     // Création des variables de décision et de la fonction objectif
     // (Ici on considère que les variables de décisions sont tjrs des entiers)
-    protected void addObjective(int dVarsNb, double[] coefs, boolean minimize) throws IloException {
+    protected void addObjective(int dVarsNb, float[] coefs, boolean minimize) throws IloException {
 
         dVars = new IloIntVar[dVarsNb];
         obj = model.linearNumExpr();
@@ -41,7 +41,7 @@ public class CplexGenerique implements Solver{
 
     }
 
-    protected void addConstraint(double coefs[], double rMember, compOp compOperator) throws IloException {
+    protected void addConstraint(float coefs[], float rMember, compOp compOperator) throws IloException {
             IloLinearNumExpr constraint = model.linearNumExpr();
             for(int i=0; i<dVars.length; i++){
                 constraint.addTerm(coefs[i], dVars[i]);
@@ -82,9 +82,9 @@ public class CplexGenerique implements Solver{
 
     public static void main(String[] args) throws IloException {
         CplexGenerique test = new CplexGenerique();
-        test.addObjective(2, new double[]{10,20}, false);
-        test.addConstraint(new double[]{1,0}, 4, compOp.LE);
-        test.addConstraint(new double[]{0,1}, 6, compOp.LE);
+        test.addObjective(2, new float[]{10,20}, false);
+        test.addConstraint(new float[]{1,0}, 4, compOp.LE);
+        test.addConstraint(new float[]{0,1}, 6, compOp.LE);
         Solution s = test.compute();
         System.out.println(s.dVars.toString());
         System.out.println(s.objRes);

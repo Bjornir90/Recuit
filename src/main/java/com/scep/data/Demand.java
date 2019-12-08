@@ -10,13 +10,13 @@ public class Demand
         this.stdDeviation = stdDeviation;
     }
 
-    public float[][] generateScenario(int scen, int scenTotNb){
+    public int[][] generateScenario(int scen, int scenTotNb){
         int size = avg.length;
         float coef = scen/scenTotNb * 4 - 2;
-        float[][] sc = new float[size][size];
+        int[][] sc = new int[size][size];
         for(int i=0; i<size; i++){
             for(int j=0; j<size; j++){
-                sc[i][j] = avg[i][j] + coef*stdDeviation[i][j];
+                sc[i][j] = (int) (avg[i][j] + coef*stdDeviation[i][j]);
             }
         }
         return sc;
