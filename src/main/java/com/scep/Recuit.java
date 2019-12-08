@@ -96,8 +96,9 @@ public class Recuit extends RecuitGenerique {
         for (int i = 0; i < nbIterationExt; i++) {
             iterationExt();
         }
-        //return meilleurX;
-        return null;
+
+        int[] meilleurXInt = new int[meilleurX.length];
+        return new Solution(meilleurXInt, fMin);
     }
 
     @Override
@@ -113,8 +114,8 @@ public class Recuit extends RecuitGenerique {
 
             //Pour chaque station
             for (int i = 0; i < V.size(); i++) {
-                coutScenario += V.get(i)* Iminus.get(s).get(i);
-                coutScenario += W.get(i)* Ominus.get(s).get(i);//Math.max((X.get(i) - K.get(i)), 0);
+                coutScenario += V.get(i) * Iminus.get(s).get(i);
+                coutScenario += W.get(i) * Ominus.get(s).get(i);//Math.max((X.get(i) - K.get(i)), 0);
             }
 
             result += coutScenario*P.get(s);
@@ -135,7 +136,7 @@ public class Recuit extends RecuitGenerique {
                 for (int j = 0; j < K.size(); j++) {
                     ksiSum += Ksi.get(s).get(i).get(j);
                     //Deuxième contrainte
-                    if(Beta.get(s).get(i).get(j) != Ksi.get(s).get(i).get(j)- Iminus.get(s).get(i))
+                    if(Beta.get(s).get(i).get(j) != Ksi.get(s).get(i).get(j) - Iminus.get(s).get(i))
                         return false;
                 }
 
