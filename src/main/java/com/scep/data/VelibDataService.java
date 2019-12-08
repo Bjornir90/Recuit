@@ -27,7 +27,7 @@ public class VelibDataService {
     public VelibDataService() {
         long l1 = System.currentTimeMillis();
         initParsedData();
-        initAvgVelibUse();
+        initDemand();
         long l2 = System.currentTimeMillis();
         System.out.printf("VelibDataService initialised in  %.3fs\n", (l2-l1)/1000.0);
     }
@@ -55,7 +55,7 @@ public class VelibDataService {
         return res;
     }
 
-    private void initAvgVelibUse() {
+    private void initDemand() {
         int[][][] matrices = parsedData.stream()
                 .map(VelibDataService::createMatrix)
                 .toArray(int[][][]::new);

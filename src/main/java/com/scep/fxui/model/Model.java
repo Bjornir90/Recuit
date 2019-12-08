@@ -24,6 +24,10 @@ public class Model {
         }
     }
 
+    public VelibDataService getDataService() {
+        return dataService;
+    }
+
     public ObservableList<StationRow> getRowList() {
         return rowList;
     }

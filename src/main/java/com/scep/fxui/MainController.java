@@ -1,8 +1,10 @@
 package com.scep.fxui;
 
-import com.scep.Solver;
+import com.scep.CplexVLS;
+import com.scep.Solution;
 import com.scep.fxui.model.Model;
 import com.scep.fxui.model.StationRow;
+import ilog.concert.IloException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,7 +50,6 @@ public class MainController {
 
     @FXML
     private void initialize() {
-
         new Thread(() -> {
             model = new Model();
             dataStatus.setText("Données chargées");
@@ -92,22 +93,36 @@ public class MainController {
 
     private void solve() {
         resolveBtn.setDisable(true);
+
         new Thread(() -> {
+            switch(resMethod.getValue()) {
+                case RECUIT:
+                    break;
+                case CPLEX:
+                    try {
+                        CplexVLS cplex = new CplexVLS();
+                        cplex.buildProblem(
+                            model.getDataService().getDemand(),
+                            model.getC(),
+                            model.getV(),
+                            model.getW(),
+                            model.getK(),
+                            Integer.parseInt(scenarios.getCharacters().toString())
+                        );
+                        Solution solution = cplex.compute();
+                        model.setX(solution.dVars);
+                    } catch (IloException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    throw new RuntimeException("No solver selected.");
+            }
 
             if(results.getItems() == model.getRowList())
                 results.refresh();
             else
                 results.setItems(model.getRowList());
-
-            Solver solver;
-            switch(resMethod.getValue()) {
-                case RECUIT:
-                    break;
-                case CPLEX:
-                    break;
-                default:
-                    throw new RuntimeException("No solver selected.");
-            }
 
             resolveBtn.setDisable(false);
         }).start();
