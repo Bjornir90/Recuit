@@ -60,6 +60,8 @@ public class Recuit extends RecuitGenerique {
 
         //Mise à jour des variables de second niveau
 
+        verifiesConstraints(Xsuiv);
+
         for (int s = 0; s < P.size(); s++) {
             for (int i = 0; i < K.size(); i++) {
                 int betaSum = 0;
@@ -71,22 +73,7 @@ public class Recuit extends RecuitGenerique {
             }
         }
 
-        int delta = (int) (objectif(Xsuiv)-objectif(X));
-
-        //On accepte l'amélioration
-        if(delta < 0){
-            X = Xsuiv;
-            if(objectif(X) < fMin){
-                fMin = (int) objectif(X);
-                meilleurX = X;
-            }
-        //On vérifie que l'on est suffisament chaud pour accepter le résultat pire
-        } else {
-            double p = ThreadLocalRandom.current().nextDouble(0, 1);
-            if(p <= Math.exp(-delta/temp)){
-                X = Xsuiv;
-            }
-        }
+        updateSolution(Xsuiv);
     }
 
     private void iterationExt(){
