@@ -95,7 +95,7 @@ public class Recuit extends RecuitGenerique {
         temp = temp/1.2f;
     }
 
-    public List<Integer> compute(){
+    public Solution compute(){
         //Initialise Xi à zéro pour tout i
         for (int i = 0; i < K.size(); i++) {
             X.add(0);
@@ -108,7 +108,8 @@ public class Recuit extends RecuitGenerique {
         for (int i = 0; i < nbIterationExt; i++) {
             iterationExt();
         }
-        return meilleurX;
+        //return meilleurX;
+        return null;
     }
 
     @Override

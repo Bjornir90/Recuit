@@ -3,64 +3,62 @@ package com.scep.data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VelibDataService {
-    private String[] jsonFiles;
-    private Map<ZonedDateTime, VelibStation[]> stationData;
+    static final private String[] JSON_FILES = {
+            "velib-0-8.json",
+            "velib-0-18.json",
+            "velib-1-8.json",
+            "velib-1-18.json",
+            "velib-2-8.json",
+            "velib-2-18.json",
+            "velib-3-8.json",
+            "velib-3-18.json",
+            "velib-4-8.json",
+            "velib-4-18.json"
+    };
+
+    private List<VelibStation[]> parsedData;
     private AvgVelibUse avgVelibUse;
 
-    public VelibDataService(String[] jsonFiles) {
-        this.jsonFiles = jsonFiles;
+    public VelibDataService() {
+        long l1 = System.currentTimeMillis();
+        initParsedData();
+        initAvgVelibUse();
+        long l2 = System.currentTimeMillis();
+        System.out.printf("VelibDataService initialised in  %.3fs\n", (l2-l1)/1000.0);
     }
 
-    private void parseInputFiles() {
-        stationData = new HashMap<>();
+    private void initParsedData() {
+        parsedData = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            for(String fn : jsonFiles) {
-                byte[] jsonData = Files.readAllBytes(Paths.get(fn));
-                VelibStation[] stations = mapper.readValue(jsonData, VelibStation[].class);
-
-                if(stations.length > 0)
-                    stationData.put(stations[0].timestamp, stations); // all records in a file have the same timestamp
-
+            for(String fn : JSON_FILES) {
+                URL resource = getClass().getResource("/velib/" + fn);
+                VelibStation[] data = mapper.readValue(resource, VelibStation[].class);
+                parsedData.add(data);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public Map<ZonedDateTime, VelibStation[]> getStationData() {
-        // lazy initialisation
-        if(stationData == null) parseInputFiles();
-        return stationData;
-    }
-
     static private int[][] createMatrix(VelibStation[] stations) {
         int size = stations.length;
-        int res[][] = new int[size][size];
+        int[][] res = new int[size][size];
         for(int i=0; i<size; i++) for(int j=0; j<size; j++) {
-            res[i][j] = i==j ? 0 : (stations[i].bikes + stations[j].bikes)/2;
+            res[i][j] = i==j ? 0 : (stations[i].getBikes() + stations[j].getBikes())/2;
         }
         return res;
     }
 
-    private int[][][] createMatrices() {
-        return getStationData().entrySet().stream()
-                .map(e -> e.getValue())
-                .map(e -> createMatrix(e))
+    private void initAvgVelibUse() {
+        int[][][] matrices = parsedData.stream()
+                .map(VelibDataService::createMatrix)
                 .toArray(int[][][]::new);
-    }
-
-    public AvgVelibUse getAvgVelibUse() {
-        if(avgVelibUse != null) return avgVelibUse;
-
-        int[][][] matrices = createMatrices();
 
         int matCount = matrices.length;
         int matSize = matrices[0].length;
@@ -77,10 +75,18 @@ public class VelibDataService {
         float[][] stdDeviation = new float[matSize][matSize];
 
         for(int i=0; i<matSize; i++) for(int j=0; j<matSize; j++) {
-            avg[i][j] = sum[i][j] / matCount;
-            stdDeviation[i][j] = (float) Math.sqrt(squareSum[i][j]/matCount - Math.pow(avg[i][j], 2));
+            avg[i][j] = sum[i][j] / (float) matCount;
+            stdDeviation[i][j] = (float) Math.sqrt(squareSum[i][j]/(double) matCount - Math.pow(avg[i][j], 2));
         }
 
-        return avgVelibUse = new AvgVelibUse(avg, stdDeviation);
+        avgVelibUse = new AvgVelibUse(avg, stdDeviation);
+    }
+
+    public List<VelibStation[]> getParsedData() {
+        return parsedData;
+    }
+
+    public AvgVelibUse getAvgVelibUse() {
+        return avgVelibUse;
     }
 }

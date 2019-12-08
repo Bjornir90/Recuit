@@ -3,18 +3,16 @@ package com.scep.data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.ZonedDateTime;
 import java.util.Map;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VelibStation {
 
-    protected String name;
-    protected int code;
-    protected int capacity;
-    protected int bikes;
-    protected ZonedDateTime timestamp;
+    private String name;
+    private int code;
+    private int capacity;
+    private int bikes;
 
     @JsonProperty("fields")
     private void unpackFields(Map<String, Object> properties) {
@@ -25,11 +23,6 @@ public class VelibStation {
         // + (int) properties.get("nbbikeoverflow") + (int) properties.get("nbebikeoverflow");
     }
 
-    @JsonProperty("record_timestamp")
-    private void parseTimestamp(String tmstmp) {
-        timestamp = ZonedDateTime.parse(tmstmp);
-    }
-
     @Override
     public String toString() {
         return "VelibStation{" +
@@ -37,7 +30,23 @@ public class VelibStation {
                 ", code=" + code +
                 ", capacity=" + capacity +
                 ", bikes=" + bikes +
-                ", timestamp=" + timestamp +
                 '}';
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public int getBikes() {
+        return bikes;
+    }
+
 }
