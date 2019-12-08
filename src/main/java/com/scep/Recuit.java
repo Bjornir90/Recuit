@@ -7,7 +7,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Recuit extends RecuitGenerique {
     private float temp;
     private int nbIterationExt, nbIterationInt, fMin;
-    private List<Integer> C, V, W, K, P, meilleurX, X;
+    private List<Integer> C, V, W, K, P;
+    private float[] X, meilleurX;
     private List<List<Integer>> Iminus, Iplus, Ominus;
     private List<List<List<Integer>>> Beta, Ksi;
 
@@ -33,7 +34,7 @@ public class Recuit extends RecuitGenerique {
         P = p;
         Beta = beta;
         Ksi = ksi;
-        X = new ArrayList<>();
+        X = new float[K.size()];
         Iplus = new ArrayList<>();
         Iminus = new ArrayList<>();
         Ominus = new ArrayList<>();
@@ -44,39 +45,39 @@ public class Recuit extends RecuitGenerique {
         }
     }
 
-    private List<Integer> mvmt(List<Integer> X){
-        List<Integer> Xsuiv = new ArrayList<>();
-        for (int i = 0; i < X.size(); i++) {
+    private float[] mvmt(float[] X){
+        float[] Xsuiv = new float[K.size()];
+        for (int i = 0; i < K.size(); i++) {
             int delta = ThreadLocalRandom.current().nextInt(-K.get(i)/4, K.get(i)/4);
-            Xsuiv.add(i, X.get(i)+delta);
+            Xsuiv[i] = X[i]+delta;
         }
         return Xsuiv;
     }
 
 
     private void iterationInt(){
-        List<Integer> Xsuiv = mvmt(X);
+        float[] Xsuiv = mvmt(X);
 
         //Mise à jour des variables de second niveau
 
         for (int s = 0; s < P.size(); s++) {
-            for (int i = 0; i < X.size(); i++) {
+            for (int i = 0; i < K.size(); i++) {
                 int betaSum = 0;
                 for (int j = 0; j < Beta.get(s).get(i).size(); j++) {
                     betaSum += Beta.get(s).get(i).get(j);
                 }
-                Iplus.get(s).add(i, Math.max(Xsuiv.get(i)-betaSum, 0));
-                Iminus.get(s).add(i, Math.max(betaSum-Xsuiv.get(i), 0));
+                Iplus.get(s).add(i, Math.max((int)Xsuiv[i]-betaSum, 0));
+                Iminus.get(s).add(i, (int) Math.max(betaSum-Xsuiv[i], 0));
             }
         }
 
-        int delta = objectif(Xsuiv)-objectif(X);
+        int delta = (int) (objectif(Xsuiv)-objectif(X));
 
         //On accepte l'amélioration
         if(delta < 0){
             X = Xsuiv;
             if(objectif(X) < fMin){
-                fMin = objectif(X);
+                fMin = (int) objectif(X);
                 meilleurX = X;
             }
         //On vérifie que l'on est suffisament chaud pour accepter le résultat pire
@@ -98,11 +99,11 @@ public class Recuit extends RecuitGenerique {
     public Solution compute(){
         //Initialise Xi à zéro pour tout i
         for (int i = 0; i < K.size(); i++) {
-            X.add(0);
+            X[i] = 0;
         }
 
         meilleurX = X;
-        fMin = objectif(X);
+        fMin = (int) objectif(X);
         temp = fMin/20;
 
         for (int i = 0; i < nbIterationExt; i++) {
@@ -136,7 +137,7 @@ public class Recuit extends RecuitGenerique {
 
     @Override
     public boolean verifiesConstraints(float[] newX) {
-        for (int i = 0; i < X.size(); i++) {
+        for (int i = 0; i < K.size(); i++) {
             if(newX[i] > K.get(i))
                 return false;
 
@@ -144,7 +145,7 @@ public class Recuit extends RecuitGenerique {
 
                 int ksiSum = 0;//Somme sur les j de ksi, pour la troisième contrainte
 
-                for (int j = 0; j < X.size(); j++) {
+                for (int j = 0; j < K.size(); j++) {
                     ksiSum += Ksi.get(s).get(i).get(j);
                     //Deuxième contrainte
                     if(Beta.get(s).get(i).get(j) != Ksi.get(s).get(i).get(j)- Iminus.get(s).get(i))
