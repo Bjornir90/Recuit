@@ -3,6 +3,7 @@ package com.scep;
 import ilog.concert.IloException;
 import ilog.concert.IloIntVar;
 import ilog.concert.IloLinearNumExpr;
+import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 
 
@@ -14,8 +15,9 @@ public class CplexGenerique implements Solver{
         EQ
     }
 
-    private IloCplex model;
-    private IloIntVar[] dVars;
+    protected IloCplex model;
+    protected int ufVarsNb;
+    private IloNumVar[] dVars;
     private IloLinearNumExpr obj;
 
     public CplexGenerique() throws IloException {
@@ -26,7 +28,7 @@ public class CplexGenerique implements Solver{
     // (Ici on considère que les variables de décisions sont tjrs des entiers)
     protected void addObjective(int dVarsNb, float[] coefs, boolean minimize) throws IloException {
 
-        dVars = new IloIntVar[dVarsNb];
+        dVars = new IloNumVar[dVarsNb];
         obj = model.linearNumExpr();
         for(int i=0; i<dVarsNb; i++){
             dVars[i] = model.intVar(0, Integer.MAX_VALUE);
@@ -64,8 +66,10 @@ public class CplexGenerique implements Solver{
         try {
             boolean isSolved = model.solve();
             if(isSolved){
-                int[] resVars = new int[dVars.length];
-                for(int i=0; i<dVars.length; i++){
+                int resVarNb = dVars.length;
+                if(ufVarsNb != 0) resVarNb = ufVarsNb;
+                int[] resVars = new int[resVarNb];
+                for(int i=0; i<resVarNb; i++){
                     resVars[i] = (int) model.getValue(dVars[i]);
                 }
                 return new Solution(resVars, model.getObjValue());
@@ -86,7 +90,6 @@ public class CplexGenerique implements Solver{
         test.addConstraint(new float[]{1,0}, 4, compOp.LE);
         test.addConstraint(new float[]{0,1}, 6, compOp.LE);
         Solution s = test.compute();
-        System.out.println(s.dVars.toString());
-        System.out.println(s.objRes);
+        System.out.println(s);
     }
 }
