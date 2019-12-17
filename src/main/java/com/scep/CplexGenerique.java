@@ -17,7 +17,7 @@ public class CplexGenerique implements Solver{
 
     protected IloCplex model;
     protected int ufVarsNb;
-    private IloNumVar[] dVars;
+    private IloIntVar[] dVars;
     private IloLinearNumExpr obj;
 
     public CplexGenerique() throws IloException {
@@ -28,7 +28,7 @@ public class CplexGenerique implements Solver{
     // (Ici on considère que les variables de décisions sont tjrs des entiers)
     protected void addObjective(int dVarsNb, float[] coefs, boolean minimize) throws IloException {
 
-        dVars = new IloNumVar[dVarsNb];
+        dVars = new IloIntVar[dVarsNb];
         obj = model.linearNumExpr();
         for(int i=0; i<dVarsNb; i++){
             dVars[i] = model.intVar(0, Integer.MAX_VALUE);
@@ -36,8 +36,7 @@ public class CplexGenerique implements Solver{
         }
         if(minimize){
             model.addMinimize(obj);
-        }
-        else {
+        } else {
             model.addMaximize(obj);
         }
 
@@ -72,7 +71,9 @@ public class CplexGenerique implements Solver{
                 for(int i=0; i<resVarNb; i++){
                     resVars[i] = (int) model.getValue(dVars[i]);
                 }
-                return new Solution(resVars, model.getObjValue());
+                Solution res = new Solution(resVars, model.getObjValue());
+                System.out.println(res);
+                return res;
             }
             else {
                 System.out.println("Problem could not be solved.");

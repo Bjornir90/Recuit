@@ -1,4 +1,4 @@
-package com.scep;
+/*package com.scep;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,22 +7,22 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Recuit extends RecuitGenerique {
     private float temp;
     private int nbIterationExt, nbIterationInt, fMin;
-    private List<Integer> C, V, W, K, P;
+    private int[] C, V, W, K, P;
     private float[] X, meilleurX;
-    private List<List<Integer>> Iminus, Iplus, Ominus;
-    private List<List<List<Integer>>> Beta, Ksi;
+    private int[][] Iminus, Iplus, Ominus;
+    private int[][][] Beta, Ksi;
 
 
     public Recuit(
             int nbIterationExt,
             int nbIterationInt,
-            List<Integer> c,
-            List<Integer> v,
-            List<Integer> w,
-            List<Integer> k,
-            List<Integer> p,
-            List<List<List<Integer>>> beta,
-            List<List<List<Integer>>> ksi)
+            int[] c,
+            int[] v,
+            int[] w,
+            int[] k,
+            int[] p,
+            int[][][] beta,
+            int[][][] ksi)
     {
 
         this.nbIterationExt = nbIterationExt;
@@ -34,8 +34,8 @@ public class Recuit extends RecuitGenerique {
         P = p;
         Beta = beta;
         Ksi = ksi;
-        X = new float[K.size()];
-        Iplus = new ArrayList<>();
+        X = new float[K.length];
+        Iplus = new int[][];
         Iminus = new ArrayList<>();
         Ominus = new ArrayList<>();
         for (int i = 0; i < K.size(); i++) {
@@ -148,3 +148,4 @@ public class Recuit extends RecuitGenerique {
         return true;
     }
 }
+*/
