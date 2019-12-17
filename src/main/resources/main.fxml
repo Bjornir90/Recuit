@@ -60,9 +60,9 @@
             <Label text="Résultats" />
             <TableView fx:id="results">
               <columns>
-                <TableColumn text="code"><cellValueFactory><PropertyValueFactory property="code" /></cellValueFactory></TableColumn>
-                <TableColumn text="nom" ><cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory></TableColumn>
-                <TableColumn text="x"   ><cellValueFactory><PropertyValueFactory property="x"    /></cellValueFactory></TableColumn>
+                <TableColumn text="code" prefWidth="70" ><cellValueFactory><PropertyValueFactory property="code" /></cellValueFactory></TableColumn>
+                <TableColumn text="nom"  prefWidth="240"><cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory></TableColumn>
+                <TableColumn text="x"    prefWidth="60" ><cellValueFactory><PropertyValueFactory property="x"    /></cellValueFactory></TableColumn>
               </columns>
             </TableView>
             <Hyperlink fx:id="export" text="Exporter" />

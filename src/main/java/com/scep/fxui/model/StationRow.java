@@ -36,7 +36,6 @@ public class StationRow {
     }
 
     public void setC(float c) {
-        System.out.println("setC");
         this.c = c;
     }
 
@@ -45,7 +44,6 @@ public class StationRow {
     }
 
     public void setV(float v) {
-        System.out.println("setV");
         this.v = v;
     }
 
@@ -54,7 +52,6 @@ public class StationRow {
     }
 
     public void setW(float w) {
-        System.out.println("setW");
         this.w = w;
     }
 
@@ -63,7 +60,6 @@ public class StationRow {
     }
 
     public void setK(int k) {
-        System.out.println("setK");
         this.k = k;
     }
 }

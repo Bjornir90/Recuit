@@ -6,11 +6,11 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <TableView fx:id="table" prefHeight="400.0" prefWidth="600.0" editable="true" xmlns="http://javafx.com/javafx/8.0.162"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.scep.fxui.DetParamController">
   <columns>
-    <TableColumn text="code"><cellValueFactory><PropertyValueFactory property="code" /></cellValueFactory></TableColumn>
-    <TableColumn text="nom"><cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory></TableColumn>
-    <TableColumn text="c" editable="true"><cellValueFactory><PropertyValueFactory property="c"/></cellValueFactory></TableColumn>
-    <TableColumn text="v" editable="true"><cellValueFactory><PropertyValueFactory property="v"/></cellValueFactory></TableColumn>
-    <TableColumn text="w" editable="true"><cellValueFactory><PropertyValueFactory property="w"/></cellValueFactory></TableColumn>
-    <TableColumn text="k" editable="true"><cellValueFactory><PropertyValueFactory property="k"/></cellValueFactory></TableColumn>
+    <TableColumn text="code" prefWidth="70"><cellValueFactory><PropertyValueFactory property="code" /></cellValueFactory></TableColumn>
+    <TableColumn text="nom" prefWidth="240"><cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory></TableColumn>
+    <TableColumn fx:id="cColumn" text="c" prefWidth="60"><cellValueFactory><PropertyValueFactory property="c"/></cellValueFactory></TableColumn>
+    <TableColumn fx:id="vColumn" text="v" prefWidth="60"><cellValueFactory><PropertyValueFactory property="v"/></cellValueFactory></TableColumn>
+    <TableColumn fx:id="wColumn" text="w" prefWidth="60"><cellValueFactory><PropertyValueFactory property="w"/></cellValueFactory></TableColumn>
+    <TableColumn fx:id="kColumn" text="k" prefWidth="60"><cellValueFactory><PropertyValueFactory property="k"/></cellValueFactory></TableColumn>
   </columns>
 </TableView>
