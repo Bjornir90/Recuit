@@ -12,7 +12,7 @@ public class Demand
 
     public int[][] generateScenario(int scen, int scenTotNb){
         int size = avg.length;
-        float coef = scen/scenTotNb * 4 - 2;
+        float coef = scenTotNb==1 ? 0:scen/(float)scenTotNb * 3 - 2;
         int[][] sc = new int[size][size];
         for(int i=0; i<size; i++){
             for(int j=0; j<size; j++){
@@ -22,7 +22,7 @@ public class Demand
         return sc;
     }
 
-    static private String matrixToString(float[][] matrix) {
+    static public String matrixToString(float[][] matrix) {
         StringBuilder res = new StringBuilder();
         for(int i=0; i<matrix.length; i++) {
             for(int j=0; j<matrix[i].length; j++) {
@@ -34,7 +34,7 @@ public class Demand
         return res.toString();
     }
 
-    static private String matrixToString(int[][] matrix) {
+    static public String matrixToString(int[][] matrix) {
         StringBuilder res = new StringBuilder();
         for(int i=0; i<matrix.length; i++) {
             for(int j=0; j<matrix[i].length; j++) {
@@ -54,9 +54,9 @@ public class Demand
                 '}';
     }
 
-    public String scenToString(){
+    public String scenToString(int scen, int scenTotNb){
         return "Scen 0{\n"+
-                matrixToString(generateScenario(0, 2))
+                matrixToString(generateScenario(scen, scenTotNb))
                 + '}';
     }
 }

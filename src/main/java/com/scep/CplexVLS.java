@@ -69,7 +69,6 @@ public class CplexVLS extends CplexGenerique {
     ) throws IloException {
 
         System.out.println(demand.toString());
-        System.out.println(demand.scenToString());
         System.out.println("C :\n");
         for (float aC_i : c_i) System.out.println(aC_i);
         System.out.println("V :\n");
@@ -81,10 +80,8 @@ public class CplexVLS extends CplexGenerique {
 
         // Construction du tableau de coefs pour la fonction objectif
         nbStation = k_i.length;
-        nbScenario = nbScen;
+        nbScenario = nbScen+1;
         ufVarsNb = nbStation; // useful variables number
-        System.out.println("nb scen : " + nbScenario);
-        System.out.println("nb station : " + nbStation);
         float[] coefs = new float[o_p(nbStation, nbScenario)+1];
         for(int i=0; i<nbStation; i++) {
             coefs[x(i)] = c_i[i];
@@ -171,11 +168,11 @@ public class CplexVLS extends CplexGenerique {
     }
 
     public static void main(String[] args) throws IloException {
-        Demand demand = new Demand(new float[][]{{0,100},{300,0}}, new float[][]{{0,2},{3,0}});
+        /*Demand demand = new Demand(new float[][]{{0,100},{300,0}}, new float[][]{{0,2},{3,0}});
         CplexVLS test = new CplexVLS();
         test.buildProblem(demand, new float[]{1,1}, new float[]{10,10}, new float[]{1,1}, new int[]{100,150}, 100);
         Solution sol = test.compute();
-        System.out.println(sol);
+        System.out.println(sol);*/
     }
 
 

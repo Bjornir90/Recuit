@@ -2,6 +2,7 @@ package com.scep.fxui.model;
 
 import com.scep.data.VelibDataService;
 import com.scep.data.VelibStation;
+import com.scep.fxui.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,6 +14,7 @@ public class Model {
 
     public Model() {
         dataService = new VelibDataService();
+        dataService = dataService.getSubset(Main.nStation);
         rowList = FXCollections.observableArrayList();
 
         // create rows with data from one json document

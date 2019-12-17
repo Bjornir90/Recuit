@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    public static int nStation;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
@@ -22,6 +24,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        nStation = Integer.parseInt(args[0]);
         launch(args);
     }
 }

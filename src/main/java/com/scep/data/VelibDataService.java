@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class VelibDataService {
     static final private String[] JSON_FILES = {
@@ -57,6 +58,7 @@ public class VelibDataService {
         int[][] res = new int[size][size];
         for(int i=0; i<size; i++) for(int j=0; j<size; j++) {
             res[i][j] = i==j ? 0 : (stations[i].getBikes() + stations[j].getBikes())/2;
+            if(ThreadLocalRandom.current().nextInt(0,size)!=1) res[i][j] = 0;
         }
         return res;
     }
