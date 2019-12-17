@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class VelibDataService {
@@ -30,6 +31,11 @@ public class VelibDataService {
         initDemand();
         long l2 = System.currentTimeMillis();
         System.out.printf("VelibDataService initialised in  %.3fs\n", (l2-l1)/1000.0);
+    }
+
+    private VelibDataService(List<VelibStation[]> parsedData) {
+        this.parsedData = parsedData;
+        initDemand();
     }
 
     private void initParsedData() {
@@ -88,5 +94,12 @@ public class VelibDataService {
 
     public Demand getDemand() {
         return demand;
+    }
+
+    public VelibDataService getSubset(int size) {
+        List<VelibStation[]> stationSubsets = new ArrayList<>();
+        for(VelibStation[] lst : parsedData)
+            stationSubsets.add(Arrays.copyOf(lst, size));
+        return new VelibDataService(stationSubsets);
     }
 }
